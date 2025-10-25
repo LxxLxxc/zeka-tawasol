@@ -2,10 +2,12 @@ import { useState } from 'react';
 
 export default function NewPost({ onPost }) {
   const [content, setContent] = useState('');
+  const author = 'Taha';       // يمكن ربطه بـ user.name
+  const role = 'admin';        // يمكن ربطه بـ user.role
 
   const handleSubmit = () => {
     if (content.trim()) {
-      onPost({ author: 'Taha', content });
+      onPost({ author, role, content });
       setContent('');
     }
   };
