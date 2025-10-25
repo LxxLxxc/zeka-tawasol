@@ -1,16 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ResetButton from './ResetButton';
 
 export default function LayoutManager({ role }) {
-  const [layout, setLayout] = useState([
-    'الرئيسية', 'المتجر', 'المشاريع', 'المجموعات', 'المحادثات', 'البريد'
-  ]);
+  const [layout, setLayout] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/layout')
+      .then(res => res.json())
+      .then(data => setLayout(data));
+  }, []);
 
   const moveItem = (fromIndex, toIndex) => {
     const updated = [...layout];
     const [moved] = updated.splice(fromIndex, 1);
     updated.splice(toIndex, 0, moved);
     setLayout(updated);
+
+    fetch('/api/layout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated)
+    });
   };
 
   return (
