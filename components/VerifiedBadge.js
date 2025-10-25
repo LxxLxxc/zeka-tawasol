@@ -24,21 +24,27 @@ export default function VerifiedBadge({ role }) {
     user20: '#98FB98',
     user21: '#7DF9FF',
     user22: '#E6E6FA',
-    user23: '#F4A460'
+    user23: '#F4A460',
+    user24: '#DC143C',
+    user25: '#8FBC8F'
   };
 
   const color = colors[role] || '#ccc';
 
   return (
-    <span style={{
-      display: 'inline-block',
-      width: '14px',
-      height: '14px',
-      borderRadius: '50%',
-      backgroundColor: color,
-      marginLeft: '6px',
-      border: '1px solid #fff',
-      boxShadow: '0 0 2px rgba(0,0,0,0.3)'
-    }} title={`Verified: ${role}`} />
+    <span
+      style={{
+        display: 'inline-block',
+        width: '14px',
+        height: '14px',
+        borderRadius: '50%',
+        backgroundColor: color,
+        marginLeft: '6px',
+        border: '1px solid #fff',
+        boxShadow: '0 0 2px rgba(0,0,0,0.3)',
+        verticalAlign: 'middle'
+      }}
+      title={`Verified: ${role}`}
+    />
   );
 }
