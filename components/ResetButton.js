@@ -18,14 +18,21 @@ export default function ResetButton({ role }) {
     <button
       onClick={handleReset}
       style={{
-        marginTop: '20px',
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
         backgroundColor: '#f44336',
         color: '#fff',
-        padding: '8px 12px',
+        padding: '10px 14px',
         border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer'
+        borderRadius: '6px',
+        cursor: 'pointer',
+        zIndex: 1000,
+        boxShadow: '0 0 8px rgba(0,0,0,0.2)',
+        transition: 'transform 0.2s ease-in-out'
       }}
+      onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+      onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
     >
       🔄 استعادة الإعدادات
     </button>
