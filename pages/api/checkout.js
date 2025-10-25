@@ -5,14 +5,19 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { amount } = req.body;
+  const { amount, successUrl, cancelUrl } = req.body;
 
-  if (!amount) {
-    return res.status(400).json({ error: 'Missing amount' });
+  if (
+    typeof amount !== 'number' ||
+    amount <= 0 ||
+    !successUrl ||
+    !cancelUrl
+  ) {
+    return res.status(400).json({ error: 'Missing or invalid payment details' });
   }
 
   try {
-    const url = await createCheckoutSession(amount, 'https://zeka-tawasol.vercel.app/success', 'https://zeka-tawasol.vercel.app/cancel');
+    const url = await createCheckoutSession(amount, successUrl, cancelUrl);
     res.status(200).json({ url });
   } catch (error) {
     console.error('Stripe error:', error);
