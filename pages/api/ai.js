@@ -7,15 +7,15 @@ export default async function handler(req, res) {
 
   const { prompt } = req.body;
 
-  if (!prompt) {
-    return res.status(400).json({ error: 'Missing prompt' });
+  if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
+    return res.status(400).json({ error: 'Missing or invalid prompt' });
   }
 
   try {
     const result = await generateAIResponse(prompt);
     res.status(200).json({ result });
   } catch (error) {
-    console.error('AI error:', error);
+    console.error('AI generation error:', error);
     res.status(500).json({ error: 'AI generation failed' });
   }
 }
