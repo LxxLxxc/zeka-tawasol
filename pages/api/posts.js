@@ -1,17 +1,32 @@
 let posts = [];
 
 export default function handler(req, res) {
-  if (req.method === 'GET') {
-    res.status(200).json(posts);
-  } else if (req.method === 'POST') {
-    const { author, content } = req.body;
-    if (!author || !content) {
-      return res.status(400).json({ error: 'Missing fields' });
+  switch (req.method) {
+    case 'GET':
+      return res.status(200).json(posts);
+
+    case 'POST': {
+      const { author, content, role = 'user' } = req.body;
+
+      if (
+        !author || typeof author !== 'string' ||
+        !content || typeof content !== 'string'
+      ) {
+        return res.status(400).json({ error: 'Missing or invalid fields' });
+      }
+
+      const newPost = {
+        author,
+        role,
+        content,
+        createdAt: new Date().toISOString()
+      };
+
+      posts.unshift(newPost);
+      return res.status(201).json(newPost);
     }
-    const newPost = { author, content };
-    posts.unshift(newPost);
-    res.status(201).json(newPost);
-  } else {
-    res.status(405).json({ error: 'Method not allowed' });
+
+    default:
+      return res.status(405).json({ error: 'Method not allowed' });
   }
 }
