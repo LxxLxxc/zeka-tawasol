@@ -1,19 +1,17 @@
-export default function AdminProjects() {
-  const allProjects = [
-    { user: 'Taha', name: 'Chat App', status: 'Published' },
-    { user: 'Ali', name: 'Store Builder', status: 'Pending' }
-  ];
+import AdminProjects from '../components/AdminProjects';
+import Navbar from '../components/Navbar';
+import FloatingAIIcon from '../components/FloatingAIIcon';
+
+export default function AdminProjectsPage() {
+  const role = 'admin'; // أو 'moderator' حسب تسجيل الدخول
 
   return (
-    <div style={{ padding: '40px' }}>
-      <h2>🛡️ Admin Project Panel</h2>
-      <ul>
-        {allProjects.map((p, i) => (
-          <li key={i}>
-            <strong>{p.user}</strong>: {p.name} – {p.status}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <Navbar role={role} />
+      <div style={{ padding: '40px' }}>
+        <AdminProjects />
+      </div>
+      <FloatingAIIcon role={role} />
+    </>
   );
 }
