@@ -1,14 +1,20 @@
 import { useState } from 'react';
+import NewPost from './NewPost';
 
 export default function ChatBox() {
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   const sendMessage = () => {
     if (message.trim()) {
       setChat([...chat, { sender: 'You', text: message }]);
       setMessage('');
     }
+  };
+
+  const addPost = (newPost) => {
+    setPosts([newPost, ...posts]);
   };
 
   return (
@@ -27,6 +33,14 @@ export default function ChatBox() {
         style={{ width: '80%' }}
       />
       <button onClick={sendMessage} style={{ marginLeft: '10px' }}>Send</button>
+
+      <div style={{ marginTop: '20px' }}>
+        <h4>Quick Post</h4>
+        <NewPost onPost={addPost} />
+        {posts.map((post, index) => (
+          <p key={index}><strong>{post.author}:</strong> {post.content}</p>
+        ))}
+      </div>
     </div>
   );
 }
