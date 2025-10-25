@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import NewPost from './NewPost';
+import VerifiedBadge from './VerifiedBadge';
 
 export default function ChatBox() {
   const [message, setMessage] = useState('');
@@ -8,7 +9,7 @@ export default function ChatBox() {
 
   const sendMessage = () => {
     if (message.trim()) {
-      setChat([...chat, { sender: 'You', text: message }]);
+      setChat([...chat, { sender: 'You', role: 'admin', text: message }]);
       setMessage('');
     }
   };
@@ -22,7 +23,10 @@ export default function ChatBox() {
       <h3>Live Chat</h3>
       <div style={{ maxHeight: '150px', overflowY: 'auto', marginBottom: '10px' }}>
         {chat.map((msg, index) => (
-          <p key={index}><strong>{msg.sender}:</strong> {msg.text}</p>
+          <p key={index}>
+            <strong>{msg.sender}</strong>
+            <VerifiedBadge role={msg.role} />: {msg.text}
+          </p>
         ))}
       </div>
       <input
@@ -38,7 +42,10 @@ export default function ChatBox() {
         <h4>Quick Post</h4>
         <NewPost onPost={addPost} />
         {posts.map((post, index) => (
-          <p key={index}><strong>{post.author}:</strong> {post.content}</p>
+          <p key={index}>
+            <strong>{post.author}</strong>
+            <VerifiedBadge role={post.role} />: {post.content}
+          </p>
         ))}
       </div>
     </div>
