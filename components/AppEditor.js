@@ -1,14 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function AppEditor({ app }) {
-  const [features, setFeatures] = useState(app.features);
+  const [features, setFeatures] = useState(app.features || []);
+  const [status, setStatus] = useState(app.status || 'Draft');
 
   const toggleFeature = (feature) => {
-    setFeatures((prev) =>
-      prev.includes(feature)
-        ? prev.filter((f) => f !== feature)
-        : [...prev, feature]
-    );
+    const updated = features.includes(feature)
+      ? features.filter((f) => f !== feature)
+      : [...features, feature];
+
+    setFeatures(updated);
+
+    axios.post('/api/apps/update', {
+      projectName: app.projectName,
+      features: updated
+    }).catch((err) => {
+      console.error('Failed to update features:', err);
+    });
+  };
+
+  const toggleStatus = () => {
+    const newStatus = status === 'Published' ? 'Draft' : 'Published';
+    setStatus(newStatus);
+
+    axios.post('/api/apps/update', {
+      projectName: app.projectName,
+      status: newStatus
+    }).catch((err) => {
+      console.error('Failed to update status:', err);
+    });
   };
 
   return (
@@ -27,6 +48,10 @@ export default function AppEditor({ app }) {
         </div>
       ))}
       <p><strong>Current Features:</strong> {features.join(', ')}</p>
+      <p><strong>Status:</strong> {status}</p>
+      <button onClick={toggleStatus} style={{ marginTop: '10px' }}>
+        {status === 'Published' ? 'Unpublish' : 'Publish'}
+      </button>
     </div>
   );
 }
